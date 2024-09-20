@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Natural Language Input</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      .container {
+        max-width: 600px;
+        margin: auto;
+      }
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        font-size: 16px;
+      }
+      button {
+        padding: 10px;
+        font-size: 16px;
+      }
+      #result {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>자연어 입력</h1>
+      <p>출발지와 도착지를 입력하세요:</p>
+      <input type="text" id="start" placeholder="출발지" />
+      <input type="text" id="goal" placeholder="도착지" />
+      <button id="submitBtn">경로 요청</button>
+      <div id="result"></div>
+    </div>
+
+    <script>
+      document.getElementById("submitBtn").addEventListener("click", async () => {
+        const start = document.getElementById("start").value;
+        const goal = document.getElementById("goal").value;
+
+        if (!start || !goal) {
+          alert("출발지와 도착지를 입력하세요!");
+          return;
+        }
+
+        // 서버로 GET 요청을 보내고 응답을 받아 처리
+        const response = await fetch(`/get-directions?start=${start}&goal=${goal}&option=trafast`);
+        const data = await response.json();
+
+        // 결과를 화면에 출력
+        document.getElementById("result").innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+      });
+    </script>
+  </body>
+</html>
